@@ -4,31 +4,31 @@ A comprehensive web application for managing pet adoptions, donations, and medic
 
 ## Features
 
-### 🔐 Authentication & Roles
+### Authentication & Roles
 - **Admin Role**: Full CRUD access to all system data
 - **Employee Role**: Limited access to create/update their own donations and adoptions
 - Secure password hashing with Flask-Login
 - Role-based route protection
 
-### 🐕 Pet Management
+### Pet Management
 - Add, edit, and delete pet records
 - Track pet status (available, adopted, foster)
 - Upload pet images via URL
 - Comprehensive pet information including breed, age, gender
 
-### 💰 Donation System
+### Donation System
 - Record financial contributions
 - Link donations to medical treatments
 - Track donor information
 - Employee-specific donation tracking
 
-### ❤️ Adoption Process
+### Adoption Process
 - Manage pet adoptions
 - Track adopter information
 - Automatic pet status updates
 - Employee adoption management
 
-### 🏥 Medical Records
+### Medical Records
 - Track pet medical treatments
 - Link treatments to donations
 - Vaccine tracking
@@ -36,96 +36,13 @@ A comprehensive web application for managing pet adoptions, donations, and medic
 
 ## Technology Stack
 
-- **Backend**: Flask (Python)
+- **Backend**: Flask
 - **Database**: MySQL
 - **Frontend**: HTML5, CSS3, JavaScript, Bootstrap 5
 - **Authentication**: Flask-Login
-- **ORM**: SQLAlchemy
-- **Database Migration**: Flask-Migrate
-
-## Installation & Setup
-
-### Prerequisites
-- Python 3.8+
-- MySQL 5.7+
-- pip (Python package manager)
-
-### 1. Clone the Repository
-```bash
-git clone <repository-url>
-cd pet-management
-```
-
-### 2. Create Virtual Environment
-```bash
-python -m venv venv
-
-# On Windows
-venv\Scripts\activate
-
-# On macOS/Linux
-source venv/bin/activate
-```
-
-### 3. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Database Setup
-
-#### Option A: Using SQL Script
-```bash
-# Create MySQL database
-mysql -u root -p
-CREATE DATABASE pet_management;
-exit
-
-# Import the schema
-mysql -u root -p pet_management < create_tables.sql
-```
-
-#### Option B: Using Flask-Migrate
-```bash
-# Initialize migration repository
-flask db init
-
-# Create initial migration
-flask db migrate -m "Initial migration"
-
-# Apply migration
-flask db upgrade
-```
-
-### 5. Environment Configuration
-```bash
-# Copy environment template
-cp env_example.txt .env
-
-# Edit .env file with your database credentials
-# Update DATABASE_URL with your MySQL connection details
-```
-
-### 6. Run the Application
-```bash
-# Method 1: Using Flask CLI
-flask run
-
-# Method 2: Using Python
-python run.py
-```
-
-The application will be available at `http://localhost:5000`
-
-## Default Login Credentials
-
-### Admin Account
-- **Username**: admin
-- **Password**: password123
-
-### Employee Account
-- **Username**: employee1
-- **Password**: password123
+- **ORM**: SQL
+- **Database Migration**: Flask
+  
 
 ## Project Structure
 
@@ -207,13 +124,6 @@ pip install pytest
 pytest tests/
 ```
 
-### Test Coverage
-- Authentication and authorization
-- CRUD operations for all entities
-- Role-based access control
-- Form validation
-- API endpoints
-
 ## Development
 
 ### Adding New Features
@@ -222,35 +132,6 @@ pytest tests/
 3. Create HTML templates in `app/templates/`
 4. Update navigation in `base.html`
 
-### Database Migrations
-```bash
-# Create new migration
-flask db migrate -m "Description of changes"
-
-# Apply migration
-flask db upgrade
-```
-
-## Deployment
-
-### Production Considerations
-1. Change `SECRET_KEY` in production
-2. Use environment variables for database credentials
-3. Set `FLASK_ENV=production`
-4. Use a production WSGI server (e.g., Gunicorn)
-5. Configure reverse proxy (e.g., Nginx)
-6. Set up SSL certificates
-7. Regular database backups
-
-### Docker Deployment (Optional)
-```dockerfile
-FROM python:3.9-slim
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-COPY . .
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "run:app"]
-```
 
 ## Contributing
 
