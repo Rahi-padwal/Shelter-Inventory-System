@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block title %}Edit {{ pet.pet_name }} - Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="fas fa-edit me-2"></i>Edit {{ pet.pet_name }}</h1>
+    <a href="{{ url_for('admin.pet_detail', pet_id=pet.pet_id) }}" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-2"></i>Back to Pet Details
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Edit Pet Information</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" id="editPetForm" enctype="multipart/form-data" novalidate>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="pet_name" class="form-label">Pet Name *</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-dog"></i></span>
+                                <input type="text" class="form-control" id="pet_name" name="pet_name" 
+                                       value="{{ pet.pet_name }}" required>
+                                <div class="invalid-feedback">
+                                    Pet name is required.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="breed" class="form-label">Breed *</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-paw"></i></span>
+                                <input type="text" class="form-control" id="breed" name="breed" 
+                                       value="{{ pet.breed }}" required>
+                                <div class="invalid-feedback">
+                                    Breed is required.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="age" class="form-label">Age (years) *</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                <input type="number" class="form-control" id="age" name="age" 
+                                       value="{{ pet.age }}" min="0" max="30" required>
+                                <div class="invalid-feedback">
+                                    Please enter a valid age (0-30 years).
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label for="gender" class="form-label">Gender *</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
+                                <select class="form-select" id="gender" name="gender" required>
+                                    <option value="male" {% if pet.gender == 'male' %}selected{% endif %}>Male</option>
+                                    <option value="female" {% if pet.gender == 'female' %}selected{% endif %}>Female</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select a gender.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label for="status" class="form-label">Status</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-info-circle"></i></span>
+                                <select class="form-select" id="status" name="status">
+                                    <option value="available" {% if pet.status == 'available' %}selected{% endif %}>Available</option>
+                                    <option value="foster" {% if pet.status == 'foster' %}selected{% endif %}>Foster</option>
+                                    <option value="adopted" {% if pet.status == 'adopted' %}selected{% endif %}>Adopted</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="shelter_no" class="form-label">Shelter Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-hashtag"></i></span>
+                                <input type="text" class="form-control" id="shelter_no" name="shelter_no" 
+                                       value="{{ pet.shelter_no or '' }}">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="pet_image" class="form-label">New Pet Image</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                <input type="file" class="form-control" id="pet_image" name="pet_image" 
+                                       accept="image/*" onchange="previewImage(this)">
+                            </div>
+                            <small class="text-muted">Upload a new image file (PNG, JPG, JPEG, GIF, WebP)</small>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="img_url" class="form-label">Or Image URL</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-link"></i></span>
+                                <input type="url" class="form-control" id="img_url" name="img_url" 
+                                       value="{{ pet.img_url or '' }}" placeholder="https://example.com/image.jpg">
+                            </div>
+                            <small class="text-muted">Alternative: Enter image URL instead of uploading</small>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="4" 
+                                  placeholder="Describe the pet's personality, special needs, etc.">{{ pet.description or '' }}</textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('admin.pet_detail', pet_id=pet.pet_id) }}" class="btn btn-secondary">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Update Pet
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Current Pet</h5>
+            </div>
+            <div class="card-body">
+                <div class="text-center">
+                    {% if pet.img_url %}
+                        <img src="{{ pet.img_url }}" alt="{{ pet.pet_name }}" class="img-fluid rounded mb-3" style="max-height: 200px; object-fit: cover;">
+                    {% else %}
+                        <div class="bg-light rounded mb-3" style="height: 200px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-paw fa-3x text-muted"></i>
+                        </div>
+                    {% endif %}
+                    
+                    <h5>{{ pet.pet_name }}</h5>
+                    <p class="text-muted">{{ pet.breed }}</p>
+                    <span class="badge bg-{{ 'success' if pet.status == 'available' else 'warning' if pet.status == 'foster' else 'info' }}">
+                        {{ pet.status.title() }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0">Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('admin.create_medical_record') }}?pet_id={{ pet.pet_id }}" class="btn btn-primary">
+                        <i class="fas fa-stethoscope me-2"></i>Add Medical Record
+                    </a>
+                    {% if pet.status == 'available' %}
+                    <a href="{{ url_for('admin.create_adoption') }}?pet_id={{ pet.pet_id }}" class="btn btn-success">
+                        <i class="fas fa-heart me-2"></i>Mark as Adopted
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function previewImage(input) {
+        const previewImg = document.getElementById('petPreview').querySelector('div');
+        
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.innerHTML = `<img src="${e.target.result}" alt="Pet preview" class="img-fluid rounded" style="max-height: 150px; object-fit: cover;">`;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        validateForm('editPetForm');
+        
+        // Live preview
+        const nameInput = document.getElementById('pet_name');
+        const breedInput = document.getElementById('breed');
+        const imgInput = document.getElementById('img_url');
+        const fileInput = document.getElementById('pet_image');
+        const previewName = document.getElementById('previewName');
+        const previewBreed = document.getElementById('previewBreed');
+        const previewImg = document.getElementById('petPreview').querySelector('div');
+        
+        function updatePreview() {
+            previewName.textContent = nameInput.value || 'Pet Name';
+            previewBreed.textContent = breedInput.value || 'Breed';
+            
+            // Check if file is selected
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.innerHTML = `<img src="${e.target.result}" alt="Pet preview" class="img-fluid rounded" style="max-height: 150px; object-fit: cover;">`;
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else if (imgInput.value) {
+                previewImg.innerHTML = `<img src="${imgInput.value}" alt="Pet preview" class="img-fluid rounded" style="max-height: 150px; object-fit: cover;">`;
+            } else {
+                previewImg.innerHTML = '<i class="fas fa-paw fa-2x text-muted"></i>';
+            }
+        }
+        
+        nameInput.addEventListener('input', updatePreview);
+        breedInput.addEventListener('input', updatePreview);
+        imgInput.addEventListener('input', updatePreview);
+        fileInput.addEventListener('change', updatePreview);
+        
+        // Initialize preview with current pet data
+        updatePreview();
+    });
+</script>
+{% endblock %}

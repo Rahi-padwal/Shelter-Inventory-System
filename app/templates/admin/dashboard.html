@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Pet Management System{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard</h1>
+    <div>
+        <span class="badge bg-primary fs-6">Admin Panel</span>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-md-3 mb-3">
+        <div class="card stats-card">
+            <div class="card-body text-center">
+                <i class="fas fa-dog fa-2x mb-2"></i>
+                <div class="stats-number">{{ pets_count }}</div>
+                <div>Total Pets</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card stats-card">
+            <div class="card-body text-center">
+                <i class="fas fa-heart fa-2x mb-2"></i>
+                <div class="stats-number">{{ adoptions_count }}</div>
+                <div>Adoptions</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card stats-card">
+            <div class="card-body text-center">
+                <i class="fas fa-donate fa-2x mb-2"></i>
+                <div class="stats-number">{{ donations_count }}</div>
+                <div>Donations</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card stats-card">
+            <div class="card-body text-center">
+                <i class="fas fa-stethoscope fa-2x mb-2"></i>
+                <div class="stats-number">{{ medical_records_count }}</div>
+                <div>Medical Records</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 mb-2">
+                        <a href="{{ url_for('admin.create_pet') }}" class="btn btn-primary w-100">
+                            <i class="fas fa-plus me-2"></i>Add Pet
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <a href="{{ url_for('admin.create_donation') }}" class="btn btn-success w-100">
+                            <i class="fas fa-donate me-2"></i>Add Donation
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <a href="{{ url_for('admin.create_adoption') }}" class="btn btn-warning w-100">
+                            <i class="fas fa-heart me-2"></i>Add Adoption
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <a href="{{ url_for('admin.create_medical_record') }}" class="btn btn-info w-100">
+                            <i class="fas fa-stethoscope me-2"></i>Add Medical Record
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activities -->
+<div class="row">
+    <!-- Recent Pets -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-dog me-2"></i>Recent Pets</h5>
+                <a href="{{ url_for('admin.pets_list') }}" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+            <div class="card-body">
+                {% if recent_pets %}
+                    {% for pet in recent_pets %}
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="flex-shrink-0">
+                            {% if pet.img_url %}
+                                <img src="{{ pet.img_url }}" alt="{{ pet.pet_name }}" class="rounded" width="50" height="50" style="object-fit: cover;">
+                            {% else %}
+                                <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                    <i class="fas fa-paw text-muted"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="mb-0">{{ pet.pet_name }}</h6>
+                            <small class="text-muted">{{ pet.breed }} • {{ pet.age }} years old</small>
+                            <br>
+                            <span class="badge bg-{{ 'success' if pet.status == 'available' else 'warning' if pet.status == 'foster' else 'info' }}">
+                                {{ pet.status.title() }}
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No pets found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Adoptions -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-heart me-2"></i>Recent Adoptions</h5>
+                <a href="{{ url_for('admin.adoptions_list') }}" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+            <div class="card-body">
+                {% if recent_adoptions %}
+                    {% for adoption in recent_adoptions %}
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="flex-shrink-0">
+                            <div class="bg-success rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <i class="fas fa-heart text-white"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="mb-0">{{ adoption.adopt_name }}</h6>
+                            <small class="text-muted">{{ adoption.adopt_email }}</small>
+                            <br>
+                            <small class="text-muted">{{ adoption.date.strftime('%Y-%m-%d') }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No adoptions found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Donations -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-donate me-2"></i>Recent Donations</h5>
+                <a href="{{ url_for('admin.donations_list') }}" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+            <div class="card-body">
+                {% if recent_donations %}
+                    {% for donation in recent_donations %}
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="flex-shrink-0">
+                            <div class="bg-warning rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <i class="fas fa-dollar-sign text-white"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="mb-0">${{ "%.2f"|format(donation.amount) }}</h6>
+                            <small class="text-muted">{{ donation.donor_name }}</small>
+                            <br>
+                            <small class="text-muted">{{ donation.date.strftime('%Y-%m-%d') }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No donations found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Medical Records -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-stethoscope me-2"></i>Recent Medical Records</h5>
+                <a href="{{ url_for('admin.medical_records_list') }}" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+            <div class="card-body">
+                {% if recent_medical %}
+                    {% for record in recent_medical %}
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="flex-shrink-0">
+                            <div class="bg-info rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <i class="fas fa-stethoscope text-white"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="mb-0">{{ record.treatment_type }}</h6>
+                            <small class="text-muted">Pet ID: {{ record.pet_id }}</small>
+                            <br>
+                            <small class="text-muted">{{ record.treat_date.strftime('%Y-%m-%d') }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No medical records found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

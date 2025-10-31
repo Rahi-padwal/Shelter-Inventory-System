@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Pet Management System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <i class="fas fa-paw fa-3x text-primary mb-3"></i>
+                    <h2 class="card-title">Pet Management System</h2>
+                    <p class="text-muted">Please sign in to continue</p>
+                </div>
+
+                <form method="POST" id="loginForm" novalidate>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid username.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid password.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                        </button>
+                    </div>
+                </form>
+
+                <div class="text-center mt-4">
+                    <p class="mb-0">Don't have an account? 
+                        <a href="{{ url_for('auth.register') }}" class="text-decoration-none">
+                            Register here
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Demo Credentials -->
+        <div class="card mt-3">
+            <div class="card-body">
+                <h6 class="card-title">Demo Credentials</h6>
+                <div class="row">
+                    <div class="col-6">
+                        <small class="text-muted">Admin:</small><br>
+                        <code>admin / password123</code>
+                    </div>
+                    <div class="col-6">
+                        <small class="text-muted">Employee:</small><br>
+                        <code>employee1 / password123</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        validateForm('loginForm');
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block title %}Add New Pet - Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="fas fa-plus me-2"></i>Add New Pet</h1>
+    <a href="{{ url_for('admin.pets_list') }}" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-2"></i>Back to Pets
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Pet Information</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" id="createPetForm" enctype="multipart/form-data" novalidate>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="pet_name" class="form-label">Pet Name *</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-dog"></i></span>
+                                <input type="text" class="form-control" id="pet_name" name="pet_name" required>
+                                <div class="invalid-feedback">
+                                    Pet name is required.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="breed" class="form-label">Breed *</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-paw"></i></span>
+                                <input type="text" class="form-control" id="breed" name="breed" required>
+                                <div class="invalid-feedback">
+                                    Breed is required.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="age" class="form-label">Age (Months) *</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                <input type="number" class="form-control" id="age" name="age" min="0" max="30" required>
+                                <div class="invalid-feedback">
+                                    Please enter a valid age (0-30 years).
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label for="gender" class="form-label">Gender *</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
+                                <select class="form-select" id="gender" name="gender" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select a gender.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label for="status" class="form-label">Status</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-info-circle"></i></span>
+                                <select class="form-select" id="status" name="status">
+                                    <option value="available">Available</option>
+                                    <option value="foster">Foster</option>
+                                    <option value="adopted">Adopted</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="shelter_no" class="form-label">Shelter Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-hashtag"></i></span>
+                                <input type="text" class="form-control" id="shelter_no" name="shelter_no">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="pet_image" class="form-label">Pet Image</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                <input type="file" class="form-control" id="pet_image" name="pet_image" 
+                                       accept="image/*" onchange="previewImage(this)">
+                            </div>
+                            <small class="text-muted">Upload an image file (PNG, JPG, JPEG, GIF, WebP) or use URL below</small>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="img_url" class="form-label">Or Image URL</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-link"></i></span>
+                                <input type="url" class="form-control" id="img_url" name="img_url" 
+                                       placeholder="https://example.com/image.jpg">
+                            </div>
+                            <small class="text-muted">Alternative: Enter image URL instead of uploading</small>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="4" 
+                                  placeholder="Describe the pet's personality, special needs, etc."></textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('admin.pets_list') }}" class="btn btn-secondary">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Create Pet
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Tips</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <strong>Required fields:</strong> Name, breed, age, and gender
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-info-circle text-info me-2"></i>
+                        <strong>Status:</strong> Available pets can be adopted
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-image text-warning me-2"></i>
+                        <strong>Image:</strong> Use a direct URL to the image
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-file-alt text-primary me-2"></i>
+                        <strong>Description:</strong> Help potential adopters understand the pet
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0">Preview</h5>
+            </div>
+            <div class="card-body">
+                <div id="petPreview" class="text-center">
+                    <div class="bg-light rounded mb-3" style="height: 150px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-paw fa-2x text-muted"></i>
+                    </div>
+                    <h6 id="previewName">Pet Name</h6>
+                    <p class="text-muted mb-0" id="previewBreed">Breed</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function previewImage(input) {
+        const previewImg = document.getElementById('petPreview').querySelector('div');
+        
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.innerHTML = `<img src="${e.target.result}" alt="Pet preview" class="img-fluid rounded" style="max-height: 150px; object-fit: cover;">`;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        validateForm('createPetForm');
+        
+        // Live preview
+        const nameInput = document.getElementById('pet_name');
+        const breedInput = document.getElementById('breed');
+        const imgInput = document.getElementById('img_url');
+        const fileInput = document.getElementById('pet_image');
+        const previewName = document.getElementById('previewName');
+        const previewBreed = document.getElementById('previewBreed');
+        const previewImg = document.getElementById('petPreview').querySelector('div');
+        
+        function updatePreview() {
+            previewName.textContent = nameInput.value || 'Pet Name';
+            previewBreed.textContent = breedInput.value || 'Breed';
+            
+            // Check if file is selected
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.innerHTML = `<img src="${e.target.result}" alt="Pet preview" class="img-fluid rounded" style="max-height: 150px; object-fit: cover;">`;
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else if (imgInput.value) {
+                previewImg.innerHTML = `<img src="${imgInput.value}" alt="Pet preview" class="img-fluid rounded" style="max-height: 150px; object-fit: cover;">`;
+            } else {
+                previewImg.innerHTML = '<i class="fas fa-paw fa-2x text-muted"></i>';
+            }
+        }
+        
+        nameInput.addEventListener('input', updatePreview);
+        breedInput.addEventListener('input', updatePreview);
+        imgInput.addEventListener('input', updatePreview);
+        fileInput.addEventListener('change', updatePreview);
+    });
+</script>
+{% endblock %}

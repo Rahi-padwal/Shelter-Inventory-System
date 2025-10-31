@@ -1,0 +1,24 @@
+# Pet Management System Environment Variables
+# Copy this file to .env and update the values
+
+# Flask Configuration
+SECRET_KEY=your-secret-key-here-change-in-production
+FLASK_ENV=development
+FLASK_DEBUG=True
+
+# Database Configuration
+DATABASE_URL=mysql+pymysql://username:password@localhost:3306/pet_management
+
+# MySQL Database Settings
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=pet_management
+DB_USER=root
+DB_PASSWORD=your-mysql-password
+
+# Optional: Email Configuration (for future features)
+MAIL_SERVER=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USE_TLS=True
+MAIL_USERNAME=your-email@gmail.com
+MAIL_PASSWORD=your-app-password

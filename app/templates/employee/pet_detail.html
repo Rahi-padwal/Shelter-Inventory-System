@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %}{{ pet.pet_name }} - Pet Details{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="fas fa-dog me-2"></i>{{ pet.pet_name }}</h1>
+    <a href="{{ url_for('employee.pets_list') }}" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-2"></i>Back to Pets
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                {% if pet.img_url %}
+                    <img src="{{ pet.img_url }}" alt="{{ pet.pet_name }}" class="img-fluid rounded mb-3" style="max-height: 300px; object-fit: cover;">
+                {% else %}
+                    <div class="bg-light rounded mb-3" style="height: 300px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-paw fa-3x text-muted"></i>
+                    </div>
+                {% endif %}
+                
+                <h4>{{ pet.pet_name }}</h4>
+                <p class="text-muted">{{ pet.breed }}</p>
+                
+                <div class="row text-center">
+                    <div class="col-4">
+                        <div class="border-end">
+                            <strong>{{ pet.age }}</strong>
+                            <br><small class="text-muted">Months Old</small>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="border-end">
+                            <strong>{{ pet.gender.title() }}</strong>
+                            <br><small class="text-muted">Gender</small>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <span class="badge bg-{{ 'success' if pet.status == 'available' else 'warning' if pet.status == 'foster' else 'info' }} fs-6">
+                            {{ pet.status.title() }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {% if pet.status == 'available' %}
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0">Adopt This Pet</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Interested in adopting {{ pet.pet_name }}?</p>
+                <a href="{{ url_for('employee.adopt_pet', pet_id=pet.pet_id) }}" class="btn btn-warning w-100">
+                    <i class="fas fa-heart me-2"></i>Adopt Now
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Pet Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Name:</strong></td>
+                                <td>{{ pet.pet_name }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Breed:</strong></td>
+                                <td>{{ pet.breed }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Age:</strong></td>
+                                <td>{{ pet.age }} months old</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gender:</strong></td>
+                                <td>{{ pet.gender.title() }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Status:</strong></td>
+                                <td>
+                                    <span class="badge bg-{{ 'success' if pet.status == 'available' else 'warning' if pet.status == 'foster' else 'info' }}">
+                                        {{ pet.status.title() }}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Shelter No:</strong></td>
+                                <td>{{ pet.shelter_no or 'N/A' }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Added:</strong></td>
+                                <td>{{ pet.created_at.strftime('%Y-%m-%d') }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                {% if pet.description %}
+                <div class="mt-3">
+                    <h6>Description</h6>
+                    <p class="text-muted">{{ pet.description }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Medical Records -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-stethoscope me-2"></i>Medical Records</h5>
+            </div>
+            <div class="card-body">
+                {% if medical_records %}
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Treatment</th>
+                                    <th>Vaccines</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for record in medical_records %}
+                                <tr>
+                                    <td>{{ record.treat_date.strftime('%Y-%m-%d') }}</td>
+                                    <td>{{ record.treatment_type }}</td>
+                                    <td>{{ record.vaccines or 'N/A' }}</td>
+                                    <td>{{ record.description or 'N/A' }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-3">
+                        <i class="fas fa-stethoscope fa-2x text-muted mb-2"></i>
+                        <p class="text-muted">No medical records found for this pet.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

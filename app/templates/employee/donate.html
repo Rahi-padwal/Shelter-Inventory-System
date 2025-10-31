@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}Make Donation - Employee{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="fas fa-donate me-2"></i>Make Donation</h1>
+    <a href="{{ url_for('employee.dashboard') }}" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Donation Information</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" id="donateForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="amount" class="form-label">Donation Amount *</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" class="form-control" id="amount" name="amount" 
+                                       step="0.01" min="0.01" required>
+                                <div class="invalid-feedback">
+                                    Please enter a valid donation amount.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="purpose" class="form-label">Purpose</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                <input type="text" class="form-control" id="purpose" name="purpose" 
+                                       placeholder="e.g., Medical care, food, general">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="donor_name" class="form-label">Your Name *</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input type="text" class="form-control" id="donor_name" name="donor_name" required>
+                                <div class="invalid-feedback">
+                                    Please enter your name.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="donor_email" class="form-label">Your Email *</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                <input type="email" class="form-control" id="donor_email" name="donor_email" required>
+                                <div class="invalid-feedback">
+                                    Please enter a valid email address.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="donor_phone" class="form-label">Phone Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                <input type="tel" class="form-control" id="donor_phone" name="donor_phone" 
+                                       placeholder="+1234567890">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message (Optional)</label>
+                        <textarea class="form-control" id="message" name="message" rows="4" 
+                                  placeholder="Any additional message or special instructions..."></textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('employee.dashboard') }}" class="btn btn-secondary">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-donate me-2"></i>Submit Donation
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Donation Impact</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <i class="fas fa-heart text-danger me-2"></i>
+                        <strong>Medical Care:</strong> Help cover veterinary expenses
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-utensils text-warning me-2"></i>
+                        <strong>Food & Supplies:</strong> Provide daily necessities
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-home text-primary me-2"></i>
+                        <strong>Shelter Operations:</strong> Support facility maintenance
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-graduation-cap text-success me-2"></i>
+                        <strong>Training:</strong> Help with behavioral support
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0">Donation Preview</h5>
+            </div>
+            <div class="card-body">
+                <div id="donationPreview">
+                    <div class="text-center">
+                        <i class="fas fa-donate fa-2x text-success mb-2"></i>
+                        <h4 id="previewAmount">$0.00</h4>
+                        <p class="text-muted mb-0" id="previewPurpose">General donation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0">Quick Donation Amounts</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-outline-primary btn-sm" onclick="setAmount(25)">$25</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm" onclick="setAmount(50)">$50</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm" onclick="setAmount(100)">$100</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm" onclick="setAmount(250)">$250</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        validateForm('donateForm');
+        
+        // Live preview
+        const amountInput = document.getElementById('amount');
+        const purposeInput = document.getElementById('purpose');
+        const previewAmount = document.getElementById('previewAmount');
+        const previewPurpose = document.getElementById('previewPurpose');
+        
+        function updatePreview() {
+            const amount = amountInput.value ? parseFloat(amountInput.value).toFixed(2) : '0.00';
+            previewAmount.textContent = '$' + amount;
+            previewPurpose.textContent = purposeInput.value || 'General donation';
+        }
+        
+        amountInput.addEventListener('input', updatePreview);
+        purposeInput.addEventListener('input', updatePreview);
+    });
+    
+    function setAmount(amount) {
+        document.getElementById('amount').value = amount;
+        document.getElementById('amount').dispatchEvent(new Event('input'));
+    }
+</script>
+{% endblock %}

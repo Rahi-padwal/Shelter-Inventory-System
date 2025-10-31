@@ -1,0 +1,534 @@
+{
+	"info": {
+		"_postman_id": "pet-management-system",
+		"name": "Pet Management System API",
+		"description": "Complete API collection for Pet Management System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					}
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "newuser",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "newuser@example.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password123",
+									"type": "text"
+								},
+								{
+									"key": "confirm_password",
+									"value": "password123",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "employee",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					}
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"logout"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin - Pets",
+			"item": [
+				{
+					"name": "List All Pets",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/admin/pets",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"pets"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Pet",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "pet_name",
+									"value": "Test Pet",
+									"type": "text"
+								},
+								{
+									"key": "breed",
+									"value": "Test Breed",
+									"type": "text"
+								},
+								{
+									"key": "age",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "male",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "available",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "A friendly test pet",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/pets/create",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"pets",
+								"create"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Pet Details",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/admin/pets/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"pets",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Pet",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "pet_name",
+									"value": "Updated Pet Name",
+									"type": "text"
+								},
+								{
+									"key": "breed",
+									"value": "Updated Breed",
+									"type": "text"
+								},
+								{
+									"key": "age",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "female",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "available",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/pets/1/edit",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"pets",
+								"1",
+								"edit"
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Pet",
+					"request": {
+						"method": "POST",
+						"url": {
+							"raw": "{{base_url}}/admin/pets/1/delete",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"pets",
+								"1",
+								"delete"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin - Donations",
+			"item": [
+				{
+					"name": "List All Donations",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/admin/donations",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"donations"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Donation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "amount",
+									"value": "100.00",
+									"type": "text"
+								},
+								{
+									"key": "purpose",
+									"value": "Medical care",
+									"type": "text"
+								},
+								{
+									"key": "donor_name",
+									"value": "John Doe",
+									"type": "text"
+								},
+								{
+									"key": "donor_email",
+									"value": "john@example.com",
+									"type": "text"
+								},
+								{
+									"key": "donor_phone",
+									"value": "+1234567890",
+									"type": "text"
+								},
+								{
+									"key": "message",
+									"value": "Hope this helps the animals",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/donations/create",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"donations",
+								"create"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Employee - Donations",
+			"item": [
+				{
+					"name": "Create Donation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "amount",
+									"value": "50.00",
+									"type": "text"
+								},
+								{
+									"key": "purpose",
+									"value": "General care",
+									"type": "text"
+								},
+								{
+									"key": "donor_name",
+									"value": "Employee Name",
+									"type": "text"
+								},
+								{
+									"key": "donor_email",
+									"value": "employee@example.com",
+									"type": "text"
+								},
+								{
+									"key": "donor_phone",
+									"value": "+1234567890",
+									"type": "text"
+								},
+								{
+									"key": "message",
+									"value": "Happy to help",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/employee/donate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"employee",
+								"donate"
+							]
+						}
+					}
+				},
+				{
+					"name": "View My Donations",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/employee/my-donations",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"employee",
+								"my-donations"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Employee - Adoptions",
+			"item": [
+				{
+					"name": "List Available Pets",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/employee/adopt",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"employee",
+								"adopt"
+							]
+						}
+					}
+				},
+				{
+					"name": "Adopt Pet",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "adopt_name",
+									"value": "Adopter Name",
+									"type": "text"
+								},
+								{
+									"key": "adopt_email",
+									"value": "adopter@example.com",
+									"type": "text"
+								},
+								{
+									"key": "adopt_phone",
+									"value": "+1234567890",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "123 Main St, City, State 12345",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/employee/adopt/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"employee",
+								"adopt",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "View My Adoptions",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/employee/my-adoptions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"employee",
+								"my-adoptions"
+							]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000",
+			"type": "string"
+		}
+	]
+}

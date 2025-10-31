@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Medical Records - Employee{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="fas fa-stethoscope me-2"></i>Medical Records</h1>
+    <a href="{{ url_for('employee.dashboard') }}" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if medical_records %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Pet</th>
+                            <th>Treatment</th>
+                            <th>Vaccines</th>
+                            <th>Description</th>
+                            <th>Donor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in medical_records %}
+                        <tr>
+                            <td>
+                                <small>{{ record.treat_date.strftime('%Y-%m-%d') }}</small>
+                                <br><small class="text-muted">{{ record.created_at.strftime('%H:%M') }}</small>
+                            </td>
+                            <td>
+                                <strong>{{ record.pet.pet_name }}</strong>
+                                <br><small class="text-muted">{{ record.pet.breed }} • {{ record.pet.age }} months old</small>
+                            </td>
+                            <td>
+                                <span class="badge bg-info">{{ record.treatment_type }}</span>
+                            </td>
+                            <td>
+                                {% if record.vaccines %}
+                                    <small>{{ record.vaccines }}</small>
+                                {% else %}
+                                    <span class="text-muted">None</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if record.description %}
+                                    <small>{{ record.description[:50] }}{% if record.description|length > 50 %}...{% endif %}</small>
+                                {% else %}
+                                    <span class="text-muted">No description</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if record.donation %}
+                                    <small>{{ record.donation.donor_name }}</small>
+                                    <br><small class="text-muted">${{ "%.2f"|format(record.donation.amount) }}</small>
+                                {% else %}
+                                    <span class="text-muted">No donor</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-stethoscope fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">No Medical Records Found</h4>
+                <p class="text-muted">There are currently no medical records in the system.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Summary Card -->
+{% if medical_records %}
+<div class="row mt-4">
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Total Records</h5>
+                <h3 class="text-primary">{{ medical_records|length }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Unique Pets</h5>
+                <h3 class="text-info">{{ medical_records|map(attribute='pet_id')|unique|list|length }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">With Vaccines</h5>
+                <h3 class="text-success">{{ medical_records|selectattr('vaccines')|list|length }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">With Donor</h5>
+                <h3 class="text-warning">{{ medical_records|selectattr('donation')|list|length }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
